@@ -8,6 +8,13 @@ import com.example.pizzaorderapp_s0n.fragments.PizzaStoreListFragment
 
 class MainViewPagerAdapter(fm: FragmentManager) :FragmentPagerAdapter(fm) {
 
+    override fun getPageTitle(position: Int): CharSequence? {
+        return when (position) {
+            0 -> "피자 가게"
+            else -> "치킨 가게"
+        }
+    }
+
     override fun getCount(): Int {
         //총 몇장짜리인가요
         return 2
