@@ -1,11 +1,13 @@
 package com.example.pizzaorderapp_s0n.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.pizzaorderapp_s0n.R
+import com.example.pizzaorderapp_s0n.ViewStoreDetailActivity
 import com.example.pizzaorderapp_s0n.adapters.PizzaStoreAdapter
 import com.example.pizzaorderapp_s0n.datas.Store
 import kotlinx.android.synthetic.main.fragment_pizza_store_list.*
@@ -37,6 +39,16 @@ class PizzaStoreListFragment :Fragment() {
         mPizzaStoreAdapter = PizzaStoreAdapter(requireContext(), R.layout.pizza_store_list_item, mPizzaStoreDataList)
 
         pizzaStoreListView.adapter = mPizzaStoreAdapter
+
+//        프래그먼트에서 가게 누르면 해당 가게로 넘어가도록 코딩.
+        pizzaStoreListView.setOnItemClickListener { parent, view, position, id ->
+
+            val clickedStore = mPizzaStoreDataList[position]
+
+            val myIntent= Intent(requireContext(), ViewStoreDetailActivity::class.java)  //Intent(출발,도착)
+            myIntent.putExtra("storeData", clickedStore )  //clickedStore -> Store니까 Store클래스에 Serialize하기
+            startActivity(myIntent)
+        }
     }
 
 }
