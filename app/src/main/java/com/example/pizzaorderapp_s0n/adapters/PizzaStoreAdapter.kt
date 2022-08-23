@@ -5,6 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.ImageView
+import android.widget.TextView
+import com.bumptech.glide.Glide
 import com.example.pizzaorderapp_s0n.R
 import com.example.pizzaorderapp_s0n.datas.Store
 
@@ -22,6 +25,16 @@ class PizzaStoreAdapter(
         }
 
         val row = tempRow!!
+
+
+        val data = mList[position]
+
+        val storeNameTxt = row.findViewById<TextView>(R.id.storeNameTxt)
+        storeNameTxt.text=data.name
+
+        val logoImg= row.findViewById<ImageView>(R.id.logoImg)
+        Glide.with(mContext).load(data.logoURL).into(logoImg)
+
 
         return row
 
