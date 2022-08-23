@@ -1,11 +1,15 @@
 package com.example.pizzaorderapp_s0n
 
+import android.Manifest
 import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.example.pizzaorderapp_s0n.datas.Store
+import com.gun0912.tedpermission.PermissionListener
+import com.gun0912.tedpermission.normal.TedPermission
 import kotlinx.android.synthetic.main.activity_view_store_detail.*
 
 class ViewStoreDetailActivity : BaseActivity() {
@@ -23,10 +27,30 @@ class ViewStoreDetailActivity : BaseActivity() {
     override fun setupEvents() {
         //전화걸기 버튼 눌럿을때 이벤트
         callPhoneBtn.setOnClickListener {
+            
+            //전화 권한 허가 팝업창 띄우는
+            val permissionListener = object : PermissionListener {
+                override fun onPermissionGranted() {
+                    val myUri = Uri.parse("tel:${mStoreData.phoneNum}")
+                    val myIntent = Intent(Intent.ACTION_CALL, myUri)
+                    startActivity(myIntent)
+                }
 
-            val myUri = Uri.parse("tel:${mStoreData.phoneNum}")
-            val myIntent = Intent(Intent.ACTION_CALL, myUri)
-            startActivity(myIntent)
+                override fun onPermissionDenied(deniedPermissions: MutableList<String>?) {
+
+                    Toast.makeText(mContext, "전화 연결 권한이 없습니다.", Toast.LENGTH_SHORT).show()
+                }
+
+            }
+            
+            //실제로 권한 확인 요청
+            TedPermission.create()
+                .setPermissionListener(permissionListener)  //권한가이드북 어떤거 볼거니
+                .setDeniedMessage("[설정]에서 전화 권한을 허용해주세요.")
+                .setPermissions(Manifest.permission.CALL_PHONE)
+                .check()  //CALL_PHONE 권한에 대해 체크해주세요
+
+
         }
 
     }
